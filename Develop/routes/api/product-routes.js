@@ -45,7 +45,7 @@ router.get('/:id', (req, res) => {
     .then(prodData => {
       res.json(prodData);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       res.json(err);
     })
