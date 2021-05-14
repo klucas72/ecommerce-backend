@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
   Category.findAll({
     include: {
       model: Product,
-      attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
+      attributes: ['product_name']
     }
   })
     .then(catData => {
@@ -25,13 +25,13 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   // find one category by its `id` value
   // be sure to include its associated Products
-  Category.findOneCat({
+  Category.findOne({
     where: {
       id: req.params.id
     },
     include: {
       model: Product,
-      attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
+      attributes: ['category_id']
     }
   })
     .then(catData => {
@@ -45,9 +45,7 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   // create a new category
-  Category.create({
-    Category_name: req.body.Category_name
-  })
+  Category.create(req.body)
     .then((newCategory) => {
       res.json(newCategory)
     })

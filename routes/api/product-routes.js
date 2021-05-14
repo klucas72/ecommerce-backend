@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Product, Category, Tag, ProductTag } = require('../../models');
+const { Product, Category, Tag, ProductTag } = require('../../models/');
 
 // The `/api/products` endpoint
 
@@ -7,7 +7,7 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 router.get('/', (req, res) => {
   // find all products
   Product.findAll({
-    attributes: ['id', 'product_name', 'price', 'stock'],
+
     include: [{
       model: Category,
       attributes: ['category_name']
@@ -53,14 +53,7 @@ router.get('/:id', (req, res) => {
 
 // create new product
 router.post('/', (req, res) => {
-  Product.create(
-    {
-      product_name: req.body.product_name,
-      price: req.body.price,
-      stock: req.body.stock,
-      Category_id: req.body.Category_id,
-      tagIds: req.body.tagIds,
-    })
+  Product.create(req.body)
 
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
@@ -127,7 +120,7 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // delete one product by its `id` value
-  Product.delete({
+  Product.destroy({
     where: {
       id: req.params.id
     }
